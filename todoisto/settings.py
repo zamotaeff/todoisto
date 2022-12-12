@@ -29,7 +29,7 @@ SECRET_KEY = config.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config.get('DJANGO_ALLOWED_HOSTS').split(" ")
 
 # Application definition
 
@@ -81,8 +81,8 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": config.get("DB_ENGINE", "django.db.backends.engine"),
-        "HOST": config.get("DB_HOST", "localhost"),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": config.get("DB_HOST", "db"),
         "NAME": config.get("DB_NAME", "skypro_l27"),
         "PORT": config.get("DB_PORT", "5432"),
         "USER": config.get("DB_USER", "skypro_l27"),
