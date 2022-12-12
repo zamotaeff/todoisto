@@ -22,7 +22,7 @@ RUN flake8 --ignore=E501,F401 .
 
 # install dependensies by poetry
 COPY poetry.lock .
-COPY Dockerfile .
+#COPY Dockerfile .
 COPY pyproject.toml .
 
 # install dependensies by poetry
