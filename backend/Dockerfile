@@ -29,7 +29,7 @@ RUN pip install poetry==1.2.2
 RUN poetry config virtualenvs.create false && poetry install
 
 # copy entrypoint.prod.sh
-COPY ./entrypoint.prod.sh .
+COPY entrypoint.prod.sh .
 RUN sed -i 's/\r$//g'  $HOME/entrypoint.prod.sh
 RUN chmod +x  $HOME/entrypoint.prod.sh
 
