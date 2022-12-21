@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+  db:
+    image: postgres:12.4-alpine
+    volumes:
+      -  postgres_data:/var/lib/postgresql/data/
+    env_file: .env
+    restart: always
+    ports:
+    - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  api:
+    build: ..
+    command: gunicorn todoisto.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    links:
+      - db
+  migrations:
+    build:
+      context: .
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python3 manage.py migrate
+
+volumes:
+  postgres_data:

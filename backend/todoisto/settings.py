@@ -9,16 +9,15 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from dotenv import dotenv_values
 
 
-config = dotenv_values()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+config = dotenv_values()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -82,7 +81,7 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": config.get("DB_HOST", "db"),
+        "HOST": config.get("DB_HOST", "localhost"),
         "NAME": config.get("DB_NAME", "skypro_l27"),
         "PORT": config.get("DB_PORT", "5432"),
         "USER": config.get("DB_USER", "skypro_l27"),
@@ -125,7 +124,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, ".././static/")
+
+MEDIA_URL = "/django_media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, ".././media/")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

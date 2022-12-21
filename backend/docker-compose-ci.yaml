@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+  db:
+    image: postgres:12.4-alpine
+    volumes:
+      -  postgres_data:/var/lib/postgresql/data/
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    restart: always
+    ports:
+    - "5432:5432"
+  api:
+    image: zamotaeff/todoisto:latest
+    command: gunicorn todoisto.wsgi:application --bind 0.0.0.0:8000
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      DEBUG: ${DEBUG}
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    links:
+      - db
+  migrations:
+    image: zamotaeff/todoisto:latest
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      DEBUG: ${DEBUG}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python3 manage.py migrate
+
+volumes:
+  postgres_data:
