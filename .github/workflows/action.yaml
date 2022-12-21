@@ -1,5 +1,4 @@
 name: CI
-description: todoisto
 on: [push]
 jobs:
   build:
