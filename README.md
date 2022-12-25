@@ -1,4 +1,4 @@
-# TODOisto - simple todo app 
+# TODOisto - simple TODO app 
 
 ## Stack: 
 - Python 3.10
