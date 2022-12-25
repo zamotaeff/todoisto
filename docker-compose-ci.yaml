@@ -10,7 +10,6 @@ services:
       - "80:80"
   api:
     image: zamotaeff/todoisto:$GITHUB_REF_NAME-$GITHUB_RUN_ID
-    command: gunicorn todoisto.wsgi:application --bind 0.0.0.0:8000
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
@@ -19,15 +18,13 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
       DEBUG: ${DEBUG}
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+    ports:
+      - "8000:8000"
   migrations:
     image: zamotaeff/todoisto:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     environment:
@@ -45,7 +42,7 @@ services:
   db:
     image: postgres:12.4-alpine
     volumes:
-      -  postgres_data:/var/lib/postgresql/data/
+      - ./postgres_data:/var/lib/postgresql/data/
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
