@@ -1,4 +1,4 @@
-# TODOisto - simple TODO app 
+# TODOisto - simple TODO app by Django
 
 ## Stack: 
 - Python 3.10
