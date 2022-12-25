@@ -29,8 +29,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: > 
-      sh -c "python3 manage.py migrate"
+    command: sh -c "python3 manage.py migrate"
   db:
     image: postgres:latest
     volumes:
