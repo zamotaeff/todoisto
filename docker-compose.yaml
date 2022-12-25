@@ -32,7 +32,7 @@ services:
     command: > 
       sh -c "python3 manage.py migrate"
   db:
-    image: postgres:12.4-alpine
+    image: postgres:latest
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
     environment:
