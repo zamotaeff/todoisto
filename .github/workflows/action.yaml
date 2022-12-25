@@ -48,5 +48,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd backend
+            docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
             echo ${{ secrets.SERVER_PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.SERVER_PASSWORD }} | sudo -S docker-compose up -d
