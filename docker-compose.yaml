@@ -8,22 +8,6 @@ services:
       - api
     ports:
       - "80:80"
-  db:
-    image: postgres:12.4-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-    restart: always
-    ports:
-    - "5432:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
   api:
     build:
       context: .
@@ -47,6 +31,22 @@ services:
         condition: service_healthy
     command: > 
       sh -c "python3 manage.py migrate"
+  db:
+    image: postgres:12.4-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    restart: always
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
