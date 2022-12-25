@@ -22,7 +22,6 @@ jobs:
       DB_NAME: ${DB_NAME}
       SECRET_KEY: ${SECRET_KEY}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
-      DEBUG: ${DEBUG}
     steps:
       - name: checkout
         uses: actions/checkout@v2
