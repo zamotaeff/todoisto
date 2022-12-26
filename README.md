@@ -9,4 +9,5 @@
 
 ## Install
 
-1. docker pull zamotaeff/todoisto
+1. docker pull zamotaeff/todoisto:latest
+2. 
