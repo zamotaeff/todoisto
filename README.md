@@ -6,8 +6,7 @@
 - Postgres 12.4
 - Docker 20.10
 
-
-## Install
-
-1. docker pull zamotaeff/todoisto:latest
-2. 
+## Install:
+1. git clone https://github.com/zamotaeff/todoisto
+2. cd todoisto
+3. docker-compose up -d
