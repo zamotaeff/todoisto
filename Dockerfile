@@ -7,6 +7,7 @@ WORKDIR /app
 
 # update pip before install dependensies
 RUN apk update && apk upgrade
+RUN apk install -y apt-utils build-essential gcc swig libmariadb-dev-compat libmariadb-dev libpangocairo-1.0-0 ruby-full
 RUN pip install -U pip
 RUN pip install flake8==3.9.2
 RUN flake8 --ignore=E501,F401 .
