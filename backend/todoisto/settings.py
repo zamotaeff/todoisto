@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": config.get("DB_HOST", "localhost"),
-        "NAME": config.get("DB_NAME", "skypro_l27"),
+        "HOST": config.get("DB_HOST", "db"),
+        "NAME": config.get("DB_NAME", "skymarket"),
         "PORT": config.get("DB_PORT", "5432"),
-        "USER": config.get("DB_USER", "skypro_l27"),
-        "PASSWORD": config.get("DB_PASSWORD", "skypro_l27"),
+        "USER": config.get("DB_USER", "skymarket"),
+        "PASSWORD": config.get("DB_PASSWORD", "skymarket"),
     },
 }
 
