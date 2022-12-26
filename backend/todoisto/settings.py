@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": config.get("POSTGRES_HOST", "localhost"),
+        "HOST": config.get("POSTGRES_HOST", "db"),
         "NAME": config.get("POSTGRES_NAME", "skymarket"),
         "PORT": config.get("POSTGRES_PORT", "5432"),
         "USER": config.get("POSTGRES_USER", "skymarket"),
