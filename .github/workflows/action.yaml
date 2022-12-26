@@ -16,10 +16,11 @@ jobs:
     needs: build_and_push
     runs-on: ubuntu-latest
     env:
-      DB_HOST: ${{ secrets.DB_HOST}}
-      DB_USER: ${{ secrets.DB_USER}}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD}}
-      DB_NAME: ${{ secrets.DB_NAME}}
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST}}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER}}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD}}
+      POSTGRES_NAME: ${{ secrets.POSTGRES_NAME}}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
       SECRET_KEY: ${{ secrets.SECRET_KEY}}
       DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
       DEBUG: ${{ secrets.DEBUG }}
