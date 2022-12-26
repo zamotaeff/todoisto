@@ -23,12 +23,12 @@ config = dotenv_values()
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('SECRET_KEY')
+SECRET_KEY = config.get('SECRET_KEY', "django-insecure-vpvsd0")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.get('DEBUG')
+DEBUG = config.get('DEBUG', False)
 
-ALLOWED_HOSTS = config.get('DJANGO_ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = config.get('DJANGO_ALLOWED_HOSTS', "[*]").split(" ")
 
 # Application definition
 
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": config.get("POSTGRES_HOST", "db"),
+        "HOST": config.get("POSTGRES_HOST", "localhost"),
         "NAME": config.get("POSTGRES_NAME", "skymarket"),
         "PORT": config.get("POSTGRES_PORT", "5432"),
         "USER": config.get("POSTGRES_USER", "skymarket"),
