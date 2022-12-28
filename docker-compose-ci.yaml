@@ -17,7 +17,6 @@ services:
       POSTGRES_NAME: ${POSTGRES_NAME}
       POSTGRES_PORT: ${POSTGRES_PORT}
       SECRET_KEY: ${SECRET_KEY}
-      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
       DEBUG: ${DEBUG}
     depends_on:
       db:
@@ -35,7 +34,6 @@ services:
       POSTGRES_NAME: ${POSTGRES_NAME}
       POSTGRES_PORT: ${POSTGRES_PORT}
       SECRET_KEY: ${SECRET_KEY}
-      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
       DEBUG: ${DEBUG}
     depends_on:
       db:
