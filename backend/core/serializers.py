@@ -17,7 +17,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if not validate_password(validated_data.get('password')):
             user = User.objects.create(**validated_data)
 
-            # Set password into a hash
+            # Set password into a hash and save
             user.set_password(validated_data.get('password'))
 
             user.save()
@@ -27,3 +27,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'password', 'email', 'password_repeat', ]
+
+
+class UserLoginSerializer(serializers.ModelSerializer):
+
+    def post(self):
+        print(self.validated_data)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
