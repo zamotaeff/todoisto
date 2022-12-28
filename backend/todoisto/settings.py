@@ -28,7 +28,7 @@ SECRET_KEY = config.get('SECRET_KEY', "django-insecure-vpvsd0")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.get('DEBUG', False)
 
-ALLOWED_HOSTS = config.get('DJANGO_ALLOWED_HOSTS', ['*']).split(" ")
+ALLOWED_HOSTS = config.get('DJANGO_ALLOWED_HOSTS', ['*'])
 
 # Application definition
 
