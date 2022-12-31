@@ -1,39 +1,52 @@
-from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
 
 
-User = get_user_model()
+USER_MODEL = get_user_model()
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password_repeat = serializers.CharField()
+class RegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    password_repeat = serializers.CharField(write_only=True)
 
-    def create(self, validated_data):
+    def create(self, validated_data) -> USER_MODEL:
+        password = validated_data.get('password')
+        # delete pass repeat from validated_data dict and return value
+        password_repeat = validated_data.pop('password_repeat')
+
         # Validate password
-        if validated_data.get('password') != validated_data.get('password_repeat'):
-            raise ValidationError('Пароли не совпадают')
-        if not validate_password(validated_data.get('password')):
-            user = User.objects.create(**validated_data)
+        if password != password_repeat:
+            raise serializers.ValidationError('Password do not match.')
 
-            # Set password into a hash and save
-            user.set_password(validated_data.get('password'))
+        hashed_password = make_password(password)
+        validated_data['password'] = hashed_password
+        instance = super().create(validated_data)
 
-            user.save()
-
-            return user
+        return instance
 
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'password', 'email', 'password_repeat', ]
+        model = USER_MODEL
+        fields = '__all__'
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
-
-    def post(self):
-        print(self.validated_data)
+class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = User
+        model = USER_MODEL
         fields = ['username', 'password']
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = USER_MODEL
+        fields = "__all__"
+
+
+class UpdatePasswordSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = USER_MODEL
+        fields = "__all__"
