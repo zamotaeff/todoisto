@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from rest_framework import permissions, generics, status
 from rest_framework.response import Response
 
@@ -14,14 +14,15 @@ class RegistrationView(generics.CreateAPIView):
 
 
 class LoginView(generics.GenericAPIView):
-    model = USER_MODEL
     serializer_class = serializers.LoginSerializer
 
-    def post(self):
-        pass
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        login(request=request, user=user)
 
-    def get_object(self):
-        return self.request.user
+        return Response(serializer.data)
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
