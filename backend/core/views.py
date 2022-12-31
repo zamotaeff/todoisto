@@ -24,11 +24,11 @@ class LoginView(generics.GenericAPIView):
         return self.request.user
 
 
-class ProfileView(RetrieveUpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserLoginSerializer
+class ProfileView(generics.RetrieveUpdateAPIView):
+    model = USER_MODEL
+    serializer_class = serializers.ProfileSerializer
 
 
-class UpdatePasswordView(UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserUpdatePasswordSerializer
+class UpdatePasswordView(generics.UpdateAPIView):
+    model = USER_MODEL
+    serializer_class = serializers.UpdatePasswordSerializer
