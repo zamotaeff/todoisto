@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 
 from rest_framework import serializers, exceptions
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import get_user_model, authenticate, password_validation
 
 USER_MODEL = get_user_model()
 
@@ -18,6 +18,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
         # Validate password
         if password != password_repeat:
             raise serializers.ValidationError('Password do not match.')
+        #
+        # try:
+        #     password_validation.validate_password(password)
+        # except Exception as ex:
+        #     raise serializers.ValidationError(ex)
 
         hashed_password = make_password(password)
         validated_data['password'] = hashed_password
