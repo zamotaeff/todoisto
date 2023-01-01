@@ -9,11 +9,13 @@ USER_MODEL = get_user_model()
 
 
 class RegistrationView(generics.CreateAPIView):
+    queryset = USER_MODEL.objects.all()
     serializer_class = serializers.RegistrationSerializer
 
 
 class LoginView(generics.GenericAPIView):
     serializer_class = serializers.LoginSerializer
+    permission_classes = [permissions.AllowAny, ]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
