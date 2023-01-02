@@ -42,4 +42,5 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UpdatePasswordView(generics.UpdateAPIView):
+    queryset = USER_MODEL.objects.all()
     serializer_class = serializers.UpdatePasswordSerializer
