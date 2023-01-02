@@ -73,10 +73,10 @@ class UpdatePasswordSerializer(serializers.ModelSerializer):
         return attrs
 
     def update(self, instance, validated_data):
-        instance.password = make_password(validated_data['new_password'])
-        instance.save()
+        self.instance.password = make_password(validated_data['new_password'])
+        self.instance.save()
 
-        return instance
+        return self.instance
 
     class Meta:
         model = USER_MODEL
