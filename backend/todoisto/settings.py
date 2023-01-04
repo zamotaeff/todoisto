@@ -9,30 +9,27 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
+from os import environ as env
 from pathlib import Path
-import environ
 
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR.joinpath('.env'))
+load_dotenv(dotenv_path=BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env['DEBUG']
 
-ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS = env['DJANGO_ALLOWED_HOSTS']
 
 # Application definition
 
@@ -90,11 +87,11 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": env("POSTGRES_HOST"),
-        "NAME": env("POSTGRES_NAME"),
-        "PORT": env("POSTGRES_PORT"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env["POSTGRES_HOST"],
+        "NAME": env["POSTGRES_NAME"],
+        "PORT": env["POSTGRES_PORT"],
+        "USER": env["POSTGRES_USER"],
+        "PASSWORD": env["POSTGRES_PASSWORD"],
     },
 }
 
@@ -134,10 +131,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, ".././static/")
+STATIC_ROOT = BASE_DIR.joinpath(".././static/")
 
 MEDIA_URL = "/django_media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, ".././media/")
+MEDIA_ROOT = BASE_DIR.joinpath(".././media/")
 
 
 # Default primary key field type
@@ -220,8 +217,8 @@ AUTHENTICATION_BACKENDS = (
 # SOCIAL AUTH
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
-SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+SOCIAL_AUTH_VK_OAUTH2_KEY = env['SOCIAL_AUTH_VK_OAUTH2_KEY']
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env['SOCIAL_AUTH_VK_OAUTH2_SECRET']
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_LOGIN_URL = '/login-error/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
