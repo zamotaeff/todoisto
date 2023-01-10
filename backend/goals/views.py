@@ -7,13 +7,13 @@ from goals import serializers
 
 
 class GoalCategoryCreateView(CreateAPIView):
-    model = models.GoalCategory
+    queryset = models.GoalCategory.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.GoalCreateSerializer
 
 
 class GoalCategoryListView(ListAPIView):
-    model = models.GoalCategory
+    queryset = models.GoalCategory.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.GoalCategorySerializer
     pagination_class = LimitOffsetPagination
@@ -32,7 +32,7 @@ class GoalCategoryListView(ListAPIView):
 
 
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
-    model = models.GoalCategory
+    queryset = models.GoalCategory.objects.all()
     serializer_class = serializers.GoalCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
 
