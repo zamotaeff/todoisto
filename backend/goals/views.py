@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
 
@@ -29,4 +29,14 @@ class GoalCategoryListView(ListAPIView):
         return models.GoalCategory.objects.filter(
             user=self.request.user, is_deleted=False
         )
+
+
+class GoalCategoryView(RetrieveUpdateDestroyAPIView):
+    model = models.GoalCategory
+    serializer_class = serializers.GoalCategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return models.GoalCategory.objects.filter(user=self.request.user,
+                                                  is_deleted=False)
 
