@@ -76,7 +76,7 @@ class GoalListView(ListAPIView):
 
     def get_queryset(self):
         return models.Goal.objects.filter(
-            user=self.request.user, is_deleted=False
+            user=self.request.user
         )
 
 
