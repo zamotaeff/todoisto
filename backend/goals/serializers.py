@@ -37,7 +37,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
     def validate_goal(self, value):
 
         if value.user != self.context["request"].user:
-            raise serializers.ValidationError("not owner of category")
+            raise serializers.ValidationError("not owner of goal")
 
         return value
 
