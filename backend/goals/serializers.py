@@ -35,6 +35,8 @@ class GoalCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def validate_goal(self, value):
+        if value.is_deleted:
+            raise serializers.ValidationError("not allowed in deleted category")
 
         if value.user != self.context["request"].user:
             raise serializers.ValidationError("not owner of goal")
