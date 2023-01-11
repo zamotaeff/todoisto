@@ -87,3 +87,22 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return models.Goal.objects.filter(user=self.request.user)
+
+
+class GoalCommentCreateView(CreateAPIView):
+    queryset = models.GoalComment.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializers.GoalCommentCreateSerializer
+
+
+class GoalCommentListView(ListAPIView):
+    queryset = models.GoalComment.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializers.GoalCommentSerializer
+    pagination_class = LimitOffsetPagination
+
+
+class GoalCommentView(RetrieveUpdateDestroyAPIView):
+    queryset = models.GoalComment.objects.all()
+    serializer_class = serializers.GoalCommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
