@@ -71,13 +71,18 @@ class GoalListView(ListAPIView):
     pagination_class = LimitOffsetPagination
     filter_backends = [
         DjangoFilterBackend,
+        OrderingFilter,
+        SearchFilter,
     ]
     filterset_class = filters.GoalDateFilter
+    ordering_fields = ["title", "created"]
+    ordering = ["title"]
+    search_fields = ["title"]
 
     def get_queryset(self):
         return models.Goal.objects.filter(
             user=self.request.user
-        )
+        ).exclude(status=models.Goal.Status.archived)
 
 
 class GoalView(RetrieveUpdateDestroyAPIView):
