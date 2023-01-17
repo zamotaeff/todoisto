@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils import timezone
+
 
 USER_MODEL = get_user_model()
 
@@ -11,12 +11,6 @@ class DatesModelMixin(models.Model):
 
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
-    #
-    # def save(self, *args, **kwargs):
-    #     if not self.id:  # Когда модель только создается – у нее нет id
-    #         self.created = timezone.now()
-    #     self.updated = timezone.now()  # Каждый раз, когда вызывается save, проставляем свежую дату обновления
-    #     return super().save(*args, **kwargs)
 
 
 class Status(models.IntegerChoices):
