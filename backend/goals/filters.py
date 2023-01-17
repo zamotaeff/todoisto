@@ -1,6 +1,5 @@
-import django_filters
 from django.db import models
-from django_filters import rest_framework
+from django_filters import rest_framework, IsoDateTimeFilter
 
 from goals.models import Goal
 
@@ -16,5 +15,5 @@ class GoalDateFilter(rest_framework.FilterSet):
         }
 
     filter_overrides = {
-        models.DateTimeField: {"filter_class": django_filters.IsoDateTimeFilter},
+        models.DateTimeField: {"filter_class": IsoDateTimeFilter},
     }
