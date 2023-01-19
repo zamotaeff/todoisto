@@ -41,8 +41,8 @@ class Goal(DatesModelMixin):
     title = models.CharField(verbose_name="Название", max_length=255)
     user = models.ForeignKey(USER_MODEL, verbose_name="Автор",
                              on_delete=models.PROTECT)
-    description = models.TextField(verbose_name="Описание")
-    due_date = models.DateTimeField(verbose_name="Дата выполнения")
+    description = models.TextField(verbose_name="Описание", blank=True, null=True)
+    due_date = models.DateTimeField(verbose_name="Дата выполнения", blank=True, null=True)
     status = models.PositiveSmallIntegerField(verbose_name="Статус",
                                               choices=Status.choices,
                                               default=Status.to_do)
