@@ -32,25 +32,39 @@ class GoalCategory(DatesModelMixin):
     user = models.ForeignKey(USER_MODEL, verbose_name="Автор", on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
 
 class Goal(DatesModelMixin):
-    title = models.CharField(verbose_name="Название", max_length=255)
-    user = models.ForeignKey(USER_MODEL, verbose_name="Автор",
+    title = models.CharField(verbose_name="Название",
+                             max_length=255)
+    user = models.ForeignKey(USER_MODEL,
+                             verbose_name="Автор",
                              on_delete=models.PROTECT)
-    description = models.TextField(verbose_name="Описание", blank=True, null=True)
-    due_date = models.DateTimeField(verbose_name="Дата выполнения", blank=True, null=True)
+    description = models.TextField(verbose_name="Описание",
+                                   blank=True,
+                                   null=True)
+    due_date = models.DateTimeField(verbose_name="Дата выполнения",
+                                    blank=True,
+                                    null=True)
     status = models.PositiveSmallIntegerField(verbose_name="Статус",
                                               choices=Status.choices,
                                               default=Status.to_do)
     priority = models.PositiveSmallIntegerField(verbose_name="Приоритет",
                                                 choices=Priority.choices,
                                                 default=Priority.medium)
-    category = models.ManyToManyField(GoalCategory,
-                                      verbose_name='Категория/Категории')
+    category = models.ForeignKey(to=GoalCategory,
+                                 verbose_name="Категория",
+                                 on_delete=models.CASCADE,
+                                 related_name="goals")
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = "Цель"
@@ -60,13 +74,16 @@ class Goal(DatesModelMixin):
 class GoalComment(DatesModelMixin):
     text = models.TextField(verbose_name="Текст")
     goal = models.ForeignKey(Goal,
-                             on_delete=models.PROTECT,
+                             on_delete=models.CASCADE,
                              verbose_name='Цель',
                              related_name='comments')
     user = models.ForeignKey(USER_MODEL,
                              verbose_name="Автор",
                              on_delete=models.PROTECT,
                              related_name='comments')
+
+    def __str__(self):
+        return self.text
 
     class Meta:
         verbose_name = "Комментарий"
