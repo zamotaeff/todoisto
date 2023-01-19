@@ -41,14 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'core',
-    'goals',
-
     'rest_framework',
-    'corsheaders',
     'django_filters',
     'social_django',
     'drf_spectacular',
+
+    'core',
+    'goals',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +86,7 @@ WSGI_APPLICATION = 'todoisto.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.postgresql",
         "HOST": env["POSTGRES_HOST"],
         "NAME": env["POSTGRES_NAME"],
         "PORT": env["POSTGRES_PORT"],
@@ -132,11 +131,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR.joinpath(".././static/")
-
-MEDIA_URL = "/django_media/"
-MEDIA_ROOT = BASE_DIR.joinpath(".././media/")
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -197,7 +191,10 @@ LOGGING = {
 
 # REST framework settings
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_FILTER_BACKEND': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
 }
 
 # AUTH backends
@@ -208,13 +205,19 @@ AUTHENTICATION_BACKENDS = (
 
 # SOCIAL AUTH
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_JSONFIELD_CUSTOM = 'django.db.models.JSONField'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_VK_OAUTH2_KEY = env['SOCIAL_AUTH_VK_OAUTH2_KEY']
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env['SOCIAL_AUTH_VK_OAUTH2_SECRET']
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_LOGIN_URL = '/login-error/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+SOCIAL_AUTH_VK_EXTRA_DATA = [
+    ('email', 'email'),
+]
+
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_USER_MODEL = 'core.User'
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
