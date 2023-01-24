@@ -1,11 +1,12 @@
 from typing import Type
 
-from core.models import User
-from core.serializers import ProfileSerializer
 from django.db import transaction
-from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
+
+from core.models import User
+from core.serializers import ProfileSerializer
+from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):

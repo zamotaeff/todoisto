@@ -141,7 +141,7 @@ class Command(BaseCommand):
         offset = 0
 
         while True:
-            res = self.tg_client.get_updates(offset=offset)
-            for item in res.result:
+            response = self.tg_client.get_updates(offset=offset)
+            for item in response.result:
                 offset = item.update_id + 1
                 self.handle_message(msg=item.message)
