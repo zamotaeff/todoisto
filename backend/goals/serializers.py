@@ -80,7 +80,6 @@ class GoalSerializer(serializers.ModelSerializer):
             return value
 
 
-# Комментарии
 class GoalCommentCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -89,19 +88,6 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", "user")
         fields = "__all__"
 
-
-#
-# 	def validate_goal(self, value):
-# 		if value.is_deleted:
-# 			raise serializers.ValidationError("not allowed in deleted goal")
-# 		if not BoardParticipant.objects.filter(
-# 			user=self.context["request"].user, board=value.category.board,
-# 			role__in=(BoardParticipant.Role.owner, BoardParticipant.Role.writer)
-# 		).exists():
-# 			raise serializers.ValidationError("not owner or writer of board")
-#
-# 		return value
-#
 
 class GoalCommentSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
@@ -112,7 +98,6 @@ class GoalCommentSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", "user", "goal")
 
 
-# Доски
 class BoardCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -164,7 +149,7 @@ class BoardSerializer(serializers.ModelSerializer):
                 if old_participant.user_id not in new_by_id:
                     old_participant.delete()
                 else:
-                    if (old_participant.role != new_by_id[old_participant.user_id]["role"]):
+                    if old_participant.role != new_by_id[old_participant.user_id]["role"]:
                         old_participant.role = new_by_id[old_participant.user_id]["role"]
                         old_participant.save()
                     new_by_id.pop(old_participant.user_id)
@@ -177,7 +162,6 @@ class BoardSerializer(serializers.ModelSerializer):
                 instance.save()
 
         return instance
-    #
 
 
 class BoardListSerializer(serializers.ModelSerializer):

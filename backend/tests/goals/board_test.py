@@ -6,6 +6,13 @@ from tests.factories import BoardFactory, BoardParticipantFactory
 
 @pytest.mark.django_db
 def test_board_create(client, get_credentials, user):
+    """
+    Test board creating
+    :param client: Django test client
+    :param get_credentials: Function to get user token for auth
+    :param user: User instance
+    :return: None
+    """
     """create board test"""
     data = {
         "title": "title",

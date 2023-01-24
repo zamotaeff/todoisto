@@ -70,7 +70,6 @@ class GoalListView(ListAPIView):
     serializer_class = GoalSerializer
     filterset_class = GoalDateFilter
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    # filterset_fields = ['category', 'priority', 'status']
     ordering_fields = ["title", 'created']
     ordering = ["title"]
     search_fields = ["title", "description"]
@@ -133,7 +132,6 @@ class GoalCommentView(RetrieveUpdateDestroyAPIView):
         )
 
 
-# Доски
 class BoardCreateView(CreateAPIView):
     permission_classes = [BoardPermissions]
     serializer_class = BoardCreateSerializer
@@ -144,9 +142,6 @@ class BoardListView(ListAPIView):
     permission_classes = [BoardPermissions]
     serializer_class = BoardListSerializer
     ordering = ["title"]
-
-    # pagination_class = LimitOffsetPagination
-    # filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
         return Board.objects.prefetch_related('participants').filter(

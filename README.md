@@ -10,3 +10,7 @@
 1. git clone https://github.com/zamotaeff/todoisto
 2. cd todoisto
 3. docker-compose up -d
+
+## Test:
+1. cd backend
+2. pytest

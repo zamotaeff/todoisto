@@ -1,6 +1,7 @@
-# Create your models here.
-from core.models import User
 from django.db import models
+from django.contrib.auth import get_user_model
+
+USER = get_user_model()
 
 
 class TgUser(models.Model):
@@ -16,7 +17,7 @@ class TgUser(models.Model):
         default=None
     )
     user = models.ForeignKey(
-        User,
+        USER,
         on_delete=models.CASCADE,
         null=True,
         default=None

@@ -17,7 +17,7 @@ def test_user_create(client, django_user_model):
     )
 
     user = django_user_model.objects.last()
-
+    print(response.status_code)
     assert response.status_code == 201
     assert response.data == {
         "id": user.id,

@@ -1,11 +1,14 @@
-import django_filters
 from django.db import models
-from django_filters import rest_framework
+from django_filters import rest_framework, IsoDateTimeFilter
 
 from goals.models import Goal
 
 
 class GoalDateFilter(rest_framework.FilterSet):
+    filter_overrides = {
+        models.DateTimeField: {"filter_class": IsoDateTimeFilter},
+    }
+
     class Meta:
         model = Goal
         fields = {
@@ -14,7 +17,3 @@ class GoalDateFilter(rest_framework.FilterSet):
             "status": ("exact", "in"),
             "priority": ("exact", "in"),
         }
-
-    filter_overrides = {
-        models.DateTimeField: {"filter_class": django_filters.IsoDateTimeFilter},
-    }

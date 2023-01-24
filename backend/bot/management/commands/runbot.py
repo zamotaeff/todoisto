@@ -1,16 +1,16 @@
 import logging
 import os
-from enum import IntEnum, auto
+
+from django.core.management import BaseCommand
+from django.conf import settings
 
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.fsm.memory_storage import MemoryStorage
+from bot.tg.fsm.states import StateEnum
 from bot.tg.models import Message
-from django.core.management import BaseCommand
 from goals.models import Goal, GoalCategory, BoardParticipant
 from pydantic import BaseModel
-
-from todoisto import settings
 
 logger = logging.getLogger(__name__)
 
@@ -22,11 +22,6 @@ class NewGoal(BaseModel):
     @property
     def is_completed(self) -> bool:
         return None not in [self.cat_id, self.goal_title]
-
-
-class StateEnum(IntEnum):
-    CREATE_CATEGORY_SELECT = auto()
-    CHOSEN_CATEGORY = auto()
 
 
 class Command(BaseCommand):
@@ -108,6 +103,7 @@ class Command(BaseCommand):
     def handle_verified_user(self, msg: Message, tg_user: TgUser):
         if msg.text == "/goals":
             self.handle_goals_list(msg, tg_user)
+
         elif msg.text == "/create":
             self.handle_goal_categories_list(msg, tg_user)
             self.storage.set_state(msg.chat.id, state=StateEnum.CREATE_CATEGORY_SELECT)
@@ -143,6 +139,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         offset = 0
+
         while True:
             res = self.tg_client.get_updates(offset=offset)
             for item in res.result:

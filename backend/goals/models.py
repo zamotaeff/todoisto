@@ -20,10 +20,6 @@ class Board(BaseModel):
 
 
 class GoalCategory(BaseModel):
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
-
     title = models.CharField(verbose_name="Название", max_length=25)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
@@ -31,6 +27,10 @@ class GoalCategory(BaseModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
 
 
 class BoardParticipant(BaseModel):
@@ -62,9 +62,6 @@ class BoardParticipant(BaseModel):
 
 
 class Goal(BaseModel):
-    class Meta:
-        verbose_name = "Цель"
-        verbose_name_plural = "Цели"
 
     class Status(models.IntegerChoices):
         to_do = 1, "К выполнению"
@@ -120,6 +117,10 @@ class Goal(BaseModel):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Цель"
+        verbose_name_plural = "Цели"
+
 
 class GoalComment(BaseModel):
     user = models.ForeignKey(
@@ -138,9 +139,9 @@ class GoalComment(BaseModel):
         verbose_name="Текст"
     )
 
+    def __str__(self):
+        return self.text
+
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
-
-    def __str__(self):
-        return self.text

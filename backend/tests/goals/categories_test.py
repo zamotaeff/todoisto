@@ -19,13 +19,15 @@ def test_category_create(client, get_credentials, board_participant):
         content_type="application/json",
         HTTP_AUTHORIZATION=get_credentials
     )
+
     category = GoalCategory.objects.last()
+
     assert response.status_code == 201
     assert response.data == {
         "id": category.id,
         "created": timezone.localtime(category.created).isoformat(),
         "updated": timezone.localtime(category.updated).isoformat(),
-        "title": "testcat",
+        "title": category.title,
         "is_deleted": False,
         "board": board_participant.board.id
     }

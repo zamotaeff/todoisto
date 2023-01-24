@@ -1,18 +1,18 @@
-from core.models import User
-from core.serializers import CreateUserSerializer, LoginSerializer, ProfileSerializer, UpdatePasswordSerializer
 from django.contrib.auth import login, logout, authenticate
 from rest_framework import generics, permissions, status
-from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
+
+from core.models import User
+from core import serializers
 
 
 class SignupView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = serializers.CreateUserSerializer
 
 
-class LoginView(CreateAPIView):
+class LoginView(generics.CreateAPIView):
     """Login user"""
-    serializer_class = LoginSerializer
+    serializer_class = serializers.LoginSerializer
 
     def post(self, request, *args, **kwargs):
         # validate request data
@@ -24,6 +24,8 @@ class LoginView(CreateAPIView):
         # authenticate
         username = request.data.get('username')
         password = request.data.get('password')
+
+        # auth
         user = authenticate(request, username=username, password=password)
 
         # login
@@ -35,7 +37,7 @@ class LoginView(CreateAPIView):
 
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ProfileSerializer
+    serializer_class = serializers.ProfileSerializer
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
@@ -49,7 +51,7 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
 
 class UpdatePasswordView(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UpdatePasswordSerializer
+    serializer_class = serializers.UpdatePasswordSerializer
 
     def get_object(self):
         return self.request.user
