@@ -25,7 +25,7 @@ services:
       retries: 5
 
   api:
-    image: ${DOCKER_USER}/todoisto:latest
+    image: ${DOCKER_USER}/todoisto:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,9 +41,10 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
-
+    ports:
+      - "8000:8000"
   bot:
-    image: ${DOCKER_USER}/todoisto:latest
+    image: ${DOCKER_USER}/todoisto:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     restart: always
     depends_on:
       postgres:
