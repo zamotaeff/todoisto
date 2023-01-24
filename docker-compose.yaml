@@ -58,7 +58,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: python ./backend/manage.py runbot
+    command: python manage.py runbot
     networks:
       - backend_nw
 
