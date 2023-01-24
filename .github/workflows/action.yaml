@@ -37,7 +37,7 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: |
-          envsubst 'DOCKER_USER' < deploy/docker-compose.yaml > deploy/tmp.docker-compose.yaml
+          envsubst '$DOCKER_USER' < deploy/docker-compose.yaml > deploy/tmp.docker-compose.yaml
           mv deploy/tmp.docker-compose.yaml deploy/docker-compose.yaml
       - name: copy files
         uses: appleboy/scp-action@master
