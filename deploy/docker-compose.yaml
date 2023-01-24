@@ -57,7 +57,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
-    command: python ./backend/manage.py runbot
+    command: python manage.py runbot
 
 volumes:
   postgres_data:
