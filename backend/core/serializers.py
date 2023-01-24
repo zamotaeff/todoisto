@@ -1,83 +1,70 @@
+from core.models import User
 from django.contrib.auth.hashers import make_password
-
-from rest_framework import serializers, exceptions
-from django.contrib.auth import get_user_model, authenticate, password_validation
-
-USER_MODEL = get_user_model()
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError, NotAuthenticated
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    password_repeat = serializers.CharField(write_only=True)
+class PasswordField(serializers.CharField):
+    def __init__(self, **kwargs):
+        kwargs["style"] = {"input_type": "password"}
+        kwargs.setdefault("write_only", True)
+        super().__init__(**kwargs)
+        self.validators.append(validate_password)
 
-    def create(self, validated_data) -> USER_MODEL:
-        password = validated_data.get('password')
-        # delete pass repeat from validated_data dict and return value
-        password_repeat = validated_data.pop('password_repeat')
 
-        # Validate password
-        if password != password_repeat:
-            raise serializers.ValidationError('Password do not match.')
-        #
-        # try:
-        #     password_validation.validate_password(password)
-        # except Exception as ex:
-        #     raise serializers.ValidationError(ex)
-
-        hashed_password = make_password(password)
-        validated_data['password'] = hashed_password
-        instance = super().create(validated_data)
-
-        return instance
+class CreateUserSerializer(serializers.ModelSerializer):
+    password = PasswordField(required=True)
+    password_repeat = PasswordField(required=True)
 
     class Meta:
-        model = USER_MODEL
-        fields = '__all__'
+        model = User
+        fields = ("id", "username", "first_name", "last_name", "email", "password", "password_repeat")
+
+    def validate(self, attrs: dict):
+        if attrs["password"] != attrs["password_repeat"]:
+            raise ValidationError("Password must match")
+        return attrs
+
+    def create(self, validated_data: dict):
+        del validated_data["password_repeat"]
+        validated_data["password"] = make_password(validated_data["password"])
+        return super().create(validated_data)
 
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
+    password = serializers.CharField(required=True)
 
-    def create(self, validated_data):
-        user = authenticate(
-            username=validated_data['username'],
-            password=validated_data['password']
-        )
-        if not user:
-            raise exceptions.AuthenticationFailed
-
-        return user
-
-    class Meta:
-        model = USER_MODEL
-        fields = ['username', 'password']
+    def validate_username(self, value):
+        """Ensure username exists"""
+        if not User.objects.filter(username=value).exists():
+            raise serializers.ValidationError(["User with such username doesn't exist"])
+        return value
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model = USER_MODEL
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        model = User
+        fields = ("id", "username", "first_name", "last_name", "email")
 
 
 class UpdatePasswordSerializer(serializers.Serializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    old_password = serializers.CharField(required=True, write_only=True)
-    new_password = serializers.CharField(required=True, write_only=True)
+    old_password = PasswordField(required=True)
+    new_password = PasswordField(required=True)
 
-    def validate(self, attrs):
-        user = attrs['user']
-        if not user.check_password(attrs['old_password']):
-            raise serializers.ValidationError({'old_password': 'incorrect password'})
+    def validate(self, attrs: dict):
+        if not (user := attrs["user"]):
+            raise NotAuthenticated
+        if not user.check_password(attrs["old_password"]):
+            raise ValidationError({"old password": "field is incorrect"})
         return attrs
 
-    def update(self, instance, validated_data):
-        instance.password = make_password(validated_data['new_password'])
-        instance.save()
+    def create(self, validated_data: dict) -> User:
+        raise NotImplementedError
 
+    def update(self, instance: User, validated_data: dict) -> User:
+        instance.password = make_password(validated_data["new_password"])
+        instance.save(update_fields=("password",))
         return instance
-
-    class Meta:
-        model = USER_MODEL
-        fields = "__all__"

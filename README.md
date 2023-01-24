@@ -1,12 +1,11 @@
-# TODOisto - simple TODO app by Django
+# Diplom
 
-## Stack: 
-- Python 3.10
-- Django 4.1
-- Postgres 12.4
-- Docker 20.10
+Написание программы "Планировщик задач" по типу Todoist
 
-## Install:
-1. git clone https://github.com/zamotaeff/todoisto
-2. cd todoisto
-3. docker-compose up -d
+
+psql -d todoisto -U nik
+password внутри .env_example
+База данных PostgreSQL
+Установить зависимости pip install -r requirements.txt
+Запуск приложения: python manage.py runserver
+
