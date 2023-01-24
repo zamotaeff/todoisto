@@ -131,6 +131,7 @@ venv.bak/
 ./nginx.conf
 ./venv
 ./.env_example
+.env_example
 
 # Spyder project settings
 .spyderproject
