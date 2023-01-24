@@ -8,9 +8,9 @@ env = environ.Env(
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-environ.Env.read_env(BASE_DIR.joinpath('../.env_example'))
+environ.Env.read_env(BASE_DIR.joinpath('./.env_example'))
 
 SECRET_KEY = env('SECRET_KEY')
 BOT_TOKEN = env('BOT_TOKEN')
