@@ -29,8 +29,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      migrations:
-        condition: service_completed_successfully
     restart: always
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
@@ -47,8 +45,6 @@ services:
     image: ${DOCKER_USER}/todoisto:latest
     restart: always
     depends_on:
-      migrations:
-        condition: service_completed_successfully
       postgres:
         condition: service_healthy
     environment:
