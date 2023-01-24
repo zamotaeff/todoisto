@@ -19,7 +19,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nik -d todoisto"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todoisto"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -57,7 +57,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
-    command: python manage.py runbot
+    command: python ./backend/manage.py runbot
 
 volumes:
   postgres_data:
