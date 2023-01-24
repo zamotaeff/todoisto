@@ -35,7 +35,6 @@ jobs:
           command: "ansible-vault decrypt deploy/.env_example"
       - name: update compose
         run: |
-          mkdir deploy
           export IMAGE_TAG=${{ secrets.IMAGE_TAG }}
           envsubst < deploy/docker-compose.yaml > deploy/tmp.docker-compose.yaml
           mv deploy/tmp.docker-compose.yaml deploy/docker-compose.yaml
