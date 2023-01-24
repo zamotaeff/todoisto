@@ -6,8 +6,6 @@ services:
       - api
     ports:
       - "80:80"
-    networks:
-      - backend_nw
 
   postgres:
     image: postgres:13.0-alpine
@@ -25,8 +23,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - backend_nw
 
   api:
     image: ${DOCKER_USER}/todoisto:latest
@@ -45,8 +41,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
-    networks:
-      - backend_nw
+
   bot:
     image: ${DOCKER_USER}/todoisto:latest
     restart: always
@@ -63,13 +58,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
-    networks:
-      - backend_nw
     command: python manage.py runbot
 
 volumes:
   postgres_data:
-
-networks:
-  backend_nw:
-    driver: bridge
