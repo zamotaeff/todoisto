@@ -25,6 +25,7 @@ jobs:
       DEBUG: ${{ secrets.DEBUG }}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_KEY }}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET }}
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
     steps:
       - name: checkout
         uses: actions/checkout@v2

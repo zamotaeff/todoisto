@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 5
 
-  api:    
+  api:
     image: ${DOCKER_USER}/todoisto:latest
     depends_on:
       postgres:
