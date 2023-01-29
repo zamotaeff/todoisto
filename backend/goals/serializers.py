@@ -52,15 +52,15 @@ class GoalCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", "user")
 
         def validate_category(self, value: GoalCategory):
-            if self.context['request'].user != value.user:
+            context_user = self.context["request"].user
+            board_participants = BoardParticipant.objects.filter(
+                board_id=value.board.id,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+                user=context_user,
+            ).exists()
+            if context_user != value.user or not board_participants:
                 raise PermissionDenied
 
-            if not BoardParticipant.objects.filter(
-                    board_id=value.board.id,
-                    role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
-                    user=self.context["request"].user,
-            ).exists():
-                raise PermissionDenied
             return value
 
 
