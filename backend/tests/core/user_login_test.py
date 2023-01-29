@@ -3,7 +3,12 @@ import pytest
 
 @pytest.mark.django_db
 def test_user_login(client, user):
-    """Authentication user test"""
+    """
+    Test user auth
+    :param client: Django test client
+    :param user: User instance
+    :return: None
+    """
     password = user.password
     user.set_password(password)
     user.save()

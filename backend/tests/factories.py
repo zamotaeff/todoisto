@@ -6,17 +6,17 @@ from goals.models import Goal, GoalCategory, Board, BoardParticipant, GoalCommen
 
 class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Faker("name")
-    first_name = "first name"
-    last_name = "last name"
-    email = "mail@mail.ru"
-    password = "AnyPass2022"
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
+    email = factory.Faker("email")
+    password = factory.Faker("password")
 
     class Meta:
         model = User
 
 
 class BoardFactory(factory.django.DjangoModelFactory):
-    title = factory.Faker("name")
+    title = factory.Faker("sentence", nb_words=2)
     is_deleted = False
 
     class Meta:
@@ -33,7 +33,7 @@ class BoardParticipantFactory(factory.django.DjangoModelFactory):
 
 
 class GoalCategoryFactory(factory.django.DjangoModelFactory):
-    title = "test category"
+    title = factory.Faker("sentence", nb_words=2)
     is_deleted = False
     user = factory.SubFactory(UserFactory)
     board = factory.SubFactory(BoardFactory)
@@ -43,8 +43,8 @@ class GoalCategoryFactory(factory.django.DjangoModelFactory):
 
 
 class GoalFactory(factory.django.DjangoModelFactory):
-    title = "goal"
-    description = "description"
+    title = factory.Faker("sentence", nb_words=2)
+    description = factory.Faker("text")
     user = factory.SubFactory(UserFactory)
     category = factory.SubFactory(GoalCategoryFactory)
     status = 1
@@ -56,7 +56,7 @@ class GoalFactory(factory.django.DjangoModelFactory):
 
 
 class GoalCommentFactory(factory.django.DjangoModelFactory):
-    text = "test comment"
+    text = factory.Faker("text")
     goal = factory.SubFactory(GoalFactory)
     user = factory.SubFactory(UserFactory)
 

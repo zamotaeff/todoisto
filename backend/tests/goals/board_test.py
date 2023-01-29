@@ -32,7 +32,13 @@ def test_board_create(client, get_credentials, user):
 
 @pytest.mark.django_db
 def test_board_list(client, get_credentials, board_participant):
-    """board list test"""
+    """
+    Test board list view
+    :param client: Django test client
+    :param get_credentials: Function to get user token for auth
+    :param board_participant: Board participant
+    :return: None
+    """
     boards = [board_participant.board]
     boards.extend(BoardFactory.create_batch(5))
     for board in boards[1:]:
@@ -50,7 +56,13 @@ def test_board_list(client, get_credentials, board_participant):
 
 @pytest.mark.django_db
 def test_board_retrieve(client, get_credentials, board, board_participant):
-    """detail board test"""
+    """
+    Test board detail view
+    :param client: Django test client
+    :param get_credentials: Function to get user token for auth
+    :param board_participant: Board participant
+    :return: None
+    """
     response = client.get(
         path=f"/goals/board/{board.id}",
         HTTP_AUTHORIZATION=get_credentials
@@ -62,7 +74,13 @@ def test_board_retrieve(client, get_credentials, board, board_participant):
 
 @pytest.mark.django_db
 def test_board_delete(client, get_credentials, board, board_participant):
-    """delete board test"""
+    """
+    Test board delete view
+    :param client: Django test client
+    :param get_credentials: Function to get user token for auth
+    :param board_participant: Board participant
+    :return: None
+    """
     response = client.delete(
         path=f"/goals/board/{board.id}",
         HTTP_AUTHORIZATION=get_credentials,

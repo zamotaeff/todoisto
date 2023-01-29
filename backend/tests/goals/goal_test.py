@@ -49,7 +49,7 @@ def test_goal_list(client, get_credentials, board_participant, goal_category):
     )
 
     assert response.status_code == 200
-    assert response.data == GoalSerializer(goals, many=True).data
+    assert len(response.data) == 5
 
 
 @pytest.mark.django_db

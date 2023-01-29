@@ -1,9 +1,15 @@
 import pytest
+from tests.factories import UserFactory
 
 
 @pytest.mark.django_db
 def test_user_create(client, django_user_model):
-    """create user test"""
+    """
+    Test user create
+    :param client: Django test client
+    :param django_user_model: Django user model
+    :return: None
+    """
     data = {
         "username": "test_user",
         "password": "p1o2i3u4",
@@ -17,7 +23,7 @@ def test_user_create(client, django_user_model):
     )
 
     user = django_user_model.objects.last()
-    print(response.status_code)
+
     assert response.status_code == 201
     assert response.data == {
         "id": user.id,

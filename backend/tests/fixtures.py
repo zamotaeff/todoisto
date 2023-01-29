@@ -4,12 +4,12 @@ import pytest
 
 @pytest.fixture
 @pytest.mark.django_db
-def get_credentials(client, user) -> base64:
+def get_credentials(client, user) -> str:
     """
     Getting a token for user authentication
     :param client: Django test client
     :param user: User instance
-    :return: token
+    :return: token string
     """
     password = user.password
 
